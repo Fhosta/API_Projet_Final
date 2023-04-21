@@ -38,7 +38,7 @@ app.use(express.urlencoded({ limit: '20mb', extended: true }))
 
 //API CONNEXION
 
-app.post('/login', function (req, res) {
+app.post('/api/login', function (req, res) {
   const { username, password } = req.body
   console.log (username,password)
   // SQL query to check if user exists and password is correct
@@ -63,4 +63,30 @@ app.post('/login', function (req, res) {
       })
     }
   })
+})
+
+
+//API Paramètre
+
+
+app.put('/api/parametre', (req, res) => {
+  const { CO2Max, CO2Min, TVOCMin,TVOCMax} = req.body
+  
+  console.log(CO2Max, CO2Min, TVOCMin,TVOCMax)
+  const sql =
+    'UPDATE parametre SET CO2Max = ?, CO2Min = ?, TVOCMin = ?, TVOCMAX = ?'
+  res.locals.connection.query(
+    sql,
+    [CO2Max, CO2Min, TVOCMin,TVOCMax],
+    (err, results) => {
+      if (err) {
+        console.error('Error updating data: ', err)
+        res.status(500).send('Error updating data')
+        return
+      } else {
+        console.log('Data updated successfully')
+        res.send(results)
+      }
+    },
+  )
 })
