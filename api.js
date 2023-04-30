@@ -68,6 +68,12 @@ app.post('/api/login', function (req, res) {
 
 //API Paramètre
 
+app.get('/api/getParametre', function (req, res, next) {
+  res.locals.connection.query('Select * from parametre', function (error, results, fields) {
+    if (error) throw error
+    res.json(results)
+  })
+})
 
 app.put('/api/parametre', (req, res) => {
   const { CO2Max, CO2Min, TVOCMin,TVOCMax} = req.body
@@ -90,3 +96,4 @@ app.put('/api/parametre', (req, res) => {
     },
   )
 })
+
